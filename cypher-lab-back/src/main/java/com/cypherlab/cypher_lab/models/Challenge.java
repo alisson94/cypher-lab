@@ -1,12 +1,28 @@
 package com.cypherlab.cypher_lab.models;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "challenges")
 public class Challenge {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
     
+    @Column(name = "title")
     private String title;
+    
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
+    
+    @Column(name = "difficulty")
     private String difficulty;
+    
+    @Column(name = "category")
     private String category;
+    
+    @Column(name = "solution_hash")
     private String solutionHash;
     
     public Challenge() {}
