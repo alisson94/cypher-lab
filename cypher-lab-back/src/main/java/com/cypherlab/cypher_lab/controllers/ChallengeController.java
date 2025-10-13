@@ -43,4 +43,10 @@ public class ChallengeController {
             return ResponseEntity.notFound().build();
         }
     }
+    
+    @GetMapping("/challenges")
+    public ResponseEntity<java.util.List<Challenge>> getAllChallenges() {
+        java.util.List<Challenge> challenges = challengeService.getAllChallenges();
+        return ResponseEntity.ok(challenges);
+    }
 }
