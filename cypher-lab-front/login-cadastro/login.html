@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CypherLab - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <div class="login-container">
+        <header class="head-box">
+            <div class="logo">
+                <img src="app-icon.png" alt="CypherLab Icon">
+                <h1>CypherLab</h1>
+            </div>
+            <h2>Bem-vindo de volta</h2>
+            <p class="subtitle">Entre na sua conta para continuar seus desafios</p>
+        </header>
+
+        <form action="#">
+            <div class="input-box">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="seu@email.com" required>
+            </div>
+
+            <div class="input-box">
+                <label for="password">Senha</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+                <i class='bx bx-hide eye-icon'></i>
+            </div>
+
+            <div class="remember-forgot">
+                <label>
+                    <input type="checkbox"> Lembrar de mim
+                </label>
+                <a href="#">Esqueceu a senha?</a>
+            </div>
+
+            <button type="submit" class="btn-login">Entrar</button>
+        </form>
+
+        <div class="login-footer">
+            <div class="signup-link">
+                <p>Não tem uma conta? <a href="cadastro.html">Criar conta</a></p>
+            </div>
+
+            <div class="divider">
+                <span>OU</span>
+            </div>
+            
+            <div class="social-buttons">
+                <button class="btn-social">
+                    <i class='bx bxl-google'></i>
+                </button>
+                <button class="btn-social">
+                    <i class='bx bxl-twitter'></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="page-footer">
+        <p>© 2025 CypherLab. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
