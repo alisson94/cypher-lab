@@ -25,6 +25,10 @@ public class Challenge {
     @Column(name = "solution_hash")
     private String solutionHash;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "modele_id")
+    private ChallengeModule module;
+
     public Challenge() {}
     
     public Challenge(String title, String description, String difficulty, String category, String solutionHash) {
@@ -81,5 +85,13 @@ public class Challenge {
     
     public void setSolutionHash(String solutionHash) {
         this.solutionHash = solutionHash;
+    }
+
+    public ChallengeModule getModule(){
+        return module;
+    }
+
+    public void setModule(ChallengeModule module){
+        this.module = module;
     }
 }
