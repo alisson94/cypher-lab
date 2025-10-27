@@ -37,7 +37,7 @@ public class ChallengeService {
         }
     }
 
-        public java.util.List<Challenge> getAllChallenges() {
+    public java.util.List<Challenge> getAllChallenges() {
         return challengeRepository.findAll();
     }
     
