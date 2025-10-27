@@ -1,5 +1,7 @@
 package com.cypherlab.cypher_lab.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +21,7 @@ import com.cypherlab.cypher_lab.models.Challenge;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*")  // Permite requisições do frontend
+@CrossOrigin(origins = "*")
 public class ChallengeController {
     
     @Autowired
@@ -45,7 +47,7 @@ public class ChallengeController {
     }
     
     @GetMapping("/challenges")
-    public ResponseEntity<java.util.List<Challenge>> getAllChallenges() {
+    public ResponseEntity<List<Challenge>> getAllChallenges() {
         java.util.List<Challenge> challenges = challengeService.getAllChallenges();
         return ResponseEntity.ok(challenges);
     }
