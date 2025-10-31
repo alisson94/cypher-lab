@@ -24,15 +24,19 @@ public class Challenge {
     
     @Column(name = "solution_hash")
     private String solutionHash;
+
+    @Column(name = "reward")
+    private Integer reward;
     
     public Challenge() {}
     
-    public Challenge(String title, String description, String difficulty, String category, String solutionHash) {
+            public Challenge(String title, String description, String difficulty, String category, String solutionHash, Integer reward) {
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
         this.category = category;
         this.solutionHash = solutionHash;
+        this.reward = reward;
     }
     
     public long getId() {
@@ -81,5 +85,13 @@ public class Challenge {
     
     public void setSolutionHash(String solutionHash) {
         this.solutionHash = solutionHash;
+    }
+
+    public Integer getReward() {
+        return reward;
+    }
+
+    public void setReward(Integer reward) {
+        this.reward = reward;
     }
 }
