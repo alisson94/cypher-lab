@@ -26,7 +26,7 @@ public class ChallengeModule {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Challenge> listChallenges = new ArrayList<>();
 
     public long getId() { return id; }
@@ -36,6 +36,7 @@ public class ChallengeModule {
     public void setTitle(String title) { this.title = title; }
 
     public List<Challenge> getListChallenges() { return listChallenges; }
+    
     public void setListChallenges(List<Challenge> listChallenges) {
         this.listChallenges.clear();
         if (listChallenges != null) listChallenges.forEach(this::addChallenge);
@@ -46,13 +47,13 @@ public class ChallengeModule {
         if (challenge == null) return;
         if (!this.listChallenges.contains(challenge)) {
             this.listChallenges.add(challenge);
-            challenge.setModule(this);
+            challenge.setCategory(this);
         }
     }
 
     public void removeChallenge(Challenge c){
         listChallenges.remove(c);
-        c.setModule(null);
+        c.setCategory(null);
     }
 
     

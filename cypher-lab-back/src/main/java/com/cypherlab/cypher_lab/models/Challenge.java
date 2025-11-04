@@ -19,19 +19,16 @@ public class Challenge {
     @Column(name = "difficulty")
     private String difficulty;
     
-    @Column(name = "category")
-    private String category;
-    
     @Column(name = "solution_hash")
     private String solutionHash;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "modele_id")
-    private ChallengeModule module;
+    private ChallengeModule category;
 
     public Challenge() {}
     
-    public Challenge(String title, String description, String difficulty, String category, String solutionHash) {
+    public Challenge(String title, String description, String difficulty, ChallengeModule category, String solutionHash) {
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
@@ -71,14 +68,6 @@ public class Challenge {
         this.difficulty = difficulty;
     }
     
-    public String getCategory() {
-        return category;
-    }
-    
-    public void setCategory(String category) {
-        this.category = category;
-    }
-    
     public String getSolutionHash() {
         return solutionHash;
     }
@@ -87,11 +76,11 @@ public class Challenge {
         this.solutionHash = solutionHash;
     }
 
-    public ChallengeModule getModule(){
-        return module;
+    public ChallengeModule getCategory(){
+        return category;
     }
 
-    public void setModule(ChallengeModule module){
-        this.module = module;
+    public void setCategory(ChallengeModule category){
+        this.category = category;
     }
 }
