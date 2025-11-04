@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cypherlab.cypher_lab.models.Challenge;
 import com.cypherlab.cypher_lab.models.ChallengeModule;
 import com.cypherlab.cypher_lab.services.ChallengeModuleService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/api")
@@ -47,8 +50,12 @@ public class ChallengeModuleController {
     }
 
 
-
     //ADMINISTRATIVOS
+    @PostMapping("/admin/module")
+    public ResponseEntity<ChallengeModule> createModule(@RequestBody ChallengeModule module) {
+        ChallengeModule createdModule = challengeModuleService.createChallengeModule(module);
+        return ResponseEntity.ok(createdModule);
+    }
     
 
 }

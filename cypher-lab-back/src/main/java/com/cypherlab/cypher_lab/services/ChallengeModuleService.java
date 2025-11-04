@@ -34,4 +34,8 @@ public class ChallengeModuleService {
         }
         return new ArrayList<>();
     }
+
+    public ChallengeModule createChallengeModule(ChallengeModule module) {
+        return challengeModuleRepository.save(module);
+    }
 }

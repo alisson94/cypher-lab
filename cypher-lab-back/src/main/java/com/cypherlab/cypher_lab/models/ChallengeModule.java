@@ -29,6 +29,11 @@ public class ChallengeModule {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Challenge> listChallenges = new ArrayList<>();
 
+    public ChallengeModule() {}
+    public ChallengeModule(String title) {
+        this.title = title;
+    }
+
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
 
@@ -36,7 +41,7 @@ public class ChallengeModule {
     public void setTitle(String title) { this.title = title; }
 
     public List<Challenge> getListChallenges() { return listChallenges; }
-    
+
     public void setListChallenges(List<Challenge> listChallenges) {
         this.listChallenges.clear();
         if (listChallenges != null) listChallenges.forEach(this::addChallenge);
