@@ -1,5 +1,7 @@
 package com.cypherlab.cypher_lab.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -19,18 +21,21 @@ public class Challenge {
     @Column(name = "difficulty")
     private String difficulty;
     
-    @Column(name = "category")
-    private String category;
-    
     @Column(name = "solution_hash")
     private String solutionHash;
 
     @Column(name = "reward")
     private Integer reward;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "module_id")
+    @JsonBackReference
+    private ChallengeModule category;
+
     public Challenge() {}
     
-            public Challenge(String title, String description, String difficulty, String category, String solutionHash, Integer reward) {
+
+    public Challenge(String title, String description, String difficulty, ChallengeModule category, String solutionHash, Integer reward) {
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
@@ -71,14 +76,6 @@ public class Challenge {
         this.difficulty = difficulty;
     }
     
-    public String getCategory() {
-        return category;
-    }
-    
-    public void setCategory(String category) {
-        this.category = category;
-    }
-    
     public String getSolutionHash() {
         return solutionHash;
     }
@@ -93,5 +90,13 @@ public class Challenge {
 
     public void setReward(Integer reward) {
         this.reward = reward;
+    }
+
+    public ChallengeModule getCategory(){
+        return category;
+    }
+
+    public void setCategory(ChallengeModule category){
+        this.category = category;
     }
 }
