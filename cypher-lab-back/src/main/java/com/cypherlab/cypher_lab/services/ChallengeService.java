@@ -1,8 +1,15 @@
 package com.cypherlab.cypher_lab.services;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.cypherlab.cypher_lab.dto.ChallengeSubmission;
 import com.cypherlab.cypher_lab.dto.ChallengeDTO;
+
 import com.cypherlab.cypher_lab.dto.SubmissionResponse;
 import com.cypherlab.cypher_lab.models.Challenge;
 import com.cypherlab.cypher_lab.models.ChallengeModule;
@@ -34,16 +41,16 @@ public class ChallengeService {
         }
         
         String normalizedAnswer = userAnswer.trim().toUpperCase();
+        String submissionHash = hashSubmission(normalizedAnswer);
 
-        
-        if (normalizedAnswer.equals(challenge.getSolutionHash())) {
+        if (submissionHash.equals(challenge.getSolutionHash())) {
             return new SubmissionResponse(true, "Parabéns! Resposta correta!");
         } else {
             return new SubmissionResponse(false, "Resposta incorreta. Tente novamente!");
         }
     }
 
-    public java.util.List<Challenge> getAllChallenges() {
+        public List<Challenge> getAllChallenges() {
         return challengeRepository.findAll();
     }
     
@@ -51,9 +58,22 @@ public class ChallengeService {
         return challengeRepository.findById(challengeId).orElse(null);
     }
 
-    // public Challenge createChallenge(Challenge challenge) {
-    //     return challengeRepository.save(challenge);
-    // }
+
+    public String hashSubmission(String input) {
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hashBytes = digest.digest(input.getBytes());
+        StringBuilder hexString = new StringBuilder();
+        for(byte b : hashBytes) {
+            String hex = Integer.toHexString(0xff & b);
+            if(hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    } catch (NoSuchAlgorithmException e) {
+        throw new RuntimeException(e);
+    }
+}
 
     public Challenge createChallengeFromDTO(ChallengeDTO dto) {
         //procura modulo
@@ -72,16 +92,6 @@ public class ChallengeService {
         
         return challengeRepository.save(challenge);
     }
-
-    // public Challenge updateChallenge(long challengeId, Challenge challengeDetails) {
-    //     return challengeRepository.findById(challengeId).map(challenge -> {
-    //         challenge.setTitle(challengeDetails.getTitle());
-    //         challenge.setDescription(challengeDetails.getDescription());
-    //         challenge.setSolutionHash(challengeDetails.getSolutionHash());
-    //         challenge.setCategory(challengeDetails.getCategory());
-    //         return challengeRepository.save(challenge);
-    //     }).orElse(null);
-    // }
 
     public Challenge updateChallengeFromDTO(long challengeId, ChallengeDTO dto) {
         return challengeRepository.findById(challengeId).map(challenge -> {

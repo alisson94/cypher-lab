@@ -51,7 +51,7 @@ public class ChallengeController {
     
     @GetMapping("/challenges")
     public ResponseEntity<List<Challenge>> getAllChallenges() {
-        java.util.List<Challenge> challenges = challengeService.getAllChallenges();
+        List<Challenge> challenges = challengeService.getAllChallenges();
         return ResponseEntity.ok(challenges);
     }
 
