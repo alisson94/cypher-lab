@@ -38,4 +38,16 @@ public class ChallengeModuleService {
     public ChallengeModule createChallengeModule(ChallengeModule module) {
         return challengeModuleRepository.save(module);
     }
+
+    public ChallengeModule updateChallengeModule(long moduleId, ChallengeModule moduleDetails) {
+        return challengeModuleRepository.findById(moduleId).map(module -> {
+            module.setTitle(moduleDetails.getTitle());
+            
+            return challengeModuleRepository.save(module);
+        }).orElse(null);
+    }
+
+    public void deleteChallengeModule(long moduleId) {
+        challengeModuleRepository.deleteById(moduleId);
+    }
 }

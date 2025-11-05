@@ -3,6 +3,7 @@ package com.cypherlab.cypher_lab.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import com.cypherlab.cypher_lab.models.Challenge;
 import com.cypherlab.cypher_lab.models.ChallengeModule;
 import com.cypherlab.cypher_lab.services.ChallengeModuleService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -39,7 +41,7 @@ public class ChallengeModuleController {
         }
     }
 
-    @GetMapping("/modules/{moduleId}/challenges")
+    @GetMapping("/module/{moduleId}/challenges")
     public ResponseEntity<java.util.List<Challenge>> getChallengesFromModule(@PathVariable long moduleId) {
         java.util.List<Challenge> challenges = challengeModuleService.getChallengesFromModule(moduleId);
         if (challenges != null) {
@@ -57,5 +59,21 @@ public class ChallengeModuleController {
         return ResponseEntity.ok(createdModule);
     }
     
+    @PutMapping("/admin/module/{moduleId}")
+    public ResponseEntity<ChallengeModule> updateModule(@PathVariable long moduleId, @RequestBody ChallengeModule moduleDetails) {
+        ChallengeModule updatedModule = challengeModuleService.updateChallengeModule(moduleId, moduleDetails);
+        if (updatedModule != null) {
+            return ResponseEntity.ok(updatedModule);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/admin/module/{moduleId}")
+    public ResponseEntity<Void> deleteModule(@PathVariable long moduleId) {
+        challengeModuleService.deleteChallengeModule(moduleId);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
