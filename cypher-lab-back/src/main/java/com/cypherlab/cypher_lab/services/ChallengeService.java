@@ -86,7 +86,7 @@ public class ChallengeService {
             dto.getDescription(),
             dto.getDifficulty(),
             module,
-            dto.getSolutionHash(),
+            this.hashSubmission(dto.getSolutionHash().trim().toUpperCase()),
             dto.getReward()
         );
         
