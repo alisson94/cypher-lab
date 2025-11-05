@@ -1,5 +1,7 @@
 package com.cypherlab.cypher_lab.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -26,7 +28,8 @@ public class Challenge {
     private Integer reward;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "modele_id")
+    @JoinColumn(name = "module_id")
+    @JsonBackReference
     private ChallengeModule category;
 
     public Challenge() {}
