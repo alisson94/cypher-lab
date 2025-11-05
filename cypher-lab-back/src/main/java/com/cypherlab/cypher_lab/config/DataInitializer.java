@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.cypherlab.cypher_lab.models.Challenge;
 import com.cypherlab.cypher_lab.models.ChallengeModule;
 import com.cypherlab.cypher_lab.repository.ChallengeRepository;
+import com.cypherlab.cypher_lab.services.ChallengeService;
 import com.cypherlab.cypher_lab.repository.ChallengeModuleRepository;
 
 import java.util.Arrays;
@@ -15,11 +16,14 @@ public class DataInitializer implements CommandLineRunner {
 
     private final ChallengeRepository challengeRepository;
     private final ChallengeModuleRepository challengeModuleRepository;
+    private final ChallengeService challengeService;
 
     public DataInitializer(ChallengeRepository challengeRepository, 
-                          ChallengeModuleRepository challengeModuleRepository) {
+                          ChallengeModuleRepository challengeModuleRepository,
+                          ChallengeService challengeService) {
         this.challengeRepository = challengeRepository;
         this.challengeModuleRepository = challengeModuleRepository;
+        this.challengeService = challengeService;
     }
 
     @Override
@@ -39,7 +43,7 @@ public class DataInitializer implements CommandLineRunner {
             "Descriptografe a seguinte mensagem cifrada com César (deslocamento 3): 'SBWKRQ'.<br><br>Instruções: Resolva manualmente. Analise a cifra de César, identifique o deslocamento e recupere a mensagem original letra por letra.",
             "Fácil",
             moduloCriptografiaClassica,  // Passa o módulo salvo
-            "PYTHON",
+            challengeService.hashSubmission("PYTHON"),
             10
         );
 
@@ -48,7 +52,7 @@ public class DataInitializer implements CommandLineRunner {
             "Descriptografe a mensagem 'MTCQWSMOCMCBTEEET' utilizando a cifra de Vigenère com a chave 'MACACO'.<br><br>Instruções: Resolva de forma computacional ou manual. Aplique o algoritmo da cifra de Vigenère, utilizando a chave fornecida para decifrar cada letra da mensagem.",
             "Médio",
             moduloCriptografiaClassica,  // Passa o módulo salvo
-            "ATAQUEAOAMANHECER",
+            challengeService.hashSubmission("ATAQUEAOAMANHECER"),
             20
         );
 
