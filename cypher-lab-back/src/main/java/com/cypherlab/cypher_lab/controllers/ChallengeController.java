@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.cypherlab.cypher_lab.dto.ChallengeDTO;
 import com.cypherlab.cypher_lab.dto.ChallengeSubmission;
+import com.cypherlab.cypher_lab.dto.ChallengeDetails;
 import com.cypherlab.cypher_lab.dto.SubmissionResponse;
 import com.cypherlab.cypher_lab.services.ChallengeService;
 
@@ -40,10 +41,18 @@ public class ChallengeController {
     }
     
     @GetMapping("/challenges/{challengeId}")
-    public ResponseEntity<Challenge> getChallenge(@PathVariable long challengeId) {
+    public ResponseEntity<ChallengeDetails> getChallenge(@PathVariable long challengeId) {
         Challenge challenge = challengeService.getChallengeById(challengeId);
         if (challenge != null) {
-            return ResponseEntity.ok(challenge);
+            ChallengeDetails challengeDetails = new ChallengeDetails(
+                challenge.getId(), 
+                challenge.getTitle(), 
+                challenge.getDescription(), 
+                challenge.getDifficulty(), 
+                challenge.getCategory().getTitle(), 
+                challenge.getReward()
+            );
+            return ResponseEntity.ok(challengeDetails);
         } else {
             return ResponseEntity.notFound().build();
         }
