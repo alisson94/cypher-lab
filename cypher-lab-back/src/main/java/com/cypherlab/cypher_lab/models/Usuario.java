@@ -1,10 +1,15 @@
 package com.cypherlab.cypher_lab.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,8 +28,8 @@ public class Usuario {
     @Column(nullable = false, columnDefinition = "INTEGER DEFAULT 0")
     private Integer pontos;
 
-    //@Column(nullable = false, columnDefinition = "ARRAYLIST<Challenge> DEFAULT TRUE")
-    //private ArrayList<Challenge> resolvedChallenges = new ArrayList<>();
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<UserChallengeProgress> challengeProgress = new ArrayList<>();
 
     public Long getId(){
         return id;
@@ -52,5 +57,13 @@ public class Usuario {
     }
     public void setPontos(Integer pontos) {
         this.pontos = pontos;
+    }
+
+    public List<UserChallengeProgress> getChallengeProgresses(){
+        return challengeProgress;
+    }
+
+    public void setChallengeProgress(List<UserChallengeProgress> challengeProgresses){
+        this.challengeProgress = challengeProgresses;
     }
 }
