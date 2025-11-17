@@ -63,17 +63,7 @@ public class ChallengeController {
     @GetMapping("/challenges")
     public ResponseEntity<List<ChallengeDetails>> getAllChallenges() {
         List<Challenge> challenges = challengeService.getAllChallenges();
-        List<ChallengeDetails> dtos = challenges.stream().map(challenge -> 
-            new ChallengeDetails(
-                challenge.getId(),
-                challenge.getTitle(),
-                challenge.getDescription(),
-                challenge.getDifficulty(),
-                challenge.getCategory().getTitle(),
-                challenge.getReward()
-            )
-        )
-        .toList();
+        List<ChallengeDetails> dtos = challengeService.mapToChallengeDetails(challenges);
         return ResponseEntity.ok(dtos);
     }
 
