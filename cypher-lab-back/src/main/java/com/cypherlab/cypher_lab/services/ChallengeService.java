@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.cypherlab.cypher_lab.dto.ChallengeSubmission;
 import com.cypherlab.cypher_lab.dto.ChallengeDTO;
-
+import com.cypherlab.cypher_lab.dto.ChallengeDetails;
 import com.cypherlab.cypher_lab.dto.SubmissionResponse;
 import com.cypherlab.cypher_lab.models.Challenge;
 import com.cypherlab.cypher_lab.models.ChallengeModule;
@@ -113,5 +113,19 @@ public class ChallengeService {
 
     public void deleteChallenge(long challengeId) {
         challengeRepository.deleteById(challengeId);
+    }
+
+    
+     public List<ChallengeDetails> mapToChallengeDetails(List<Challenge> challenges) {
+        return challenges.stream()
+            .map(challenge -> new ChallengeDetails(
+                challenge.getId(),
+                challenge.getTitle(),
+                challenge.getDescription(),
+                challenge.getDifficulty(),
+                challenge.getCategory() != null ? challenge.getCategory().getTitle() : null,
+                challenge.getReward()
+            ))
+            .toList();
     }
 }
