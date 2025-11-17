@@ -1,13 +1,13 @@
 package com.cypherlab.cypher_lab.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.apache.catalina.User;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cypherlab.cypher_lab.models.Usuario;
+import com.cypherlab.cypher_lab.dto.UserProgressDTO;
 import com.cypherlab.cypher_lab.models.Challenge;
 import com.cypherlab.cypher_lab.models.UserChallengeProgress;
 import com.cypherlab.cypher_lab.repository.ChallengeRepository;
@@ -63,12 +63,40 @@ public class UserChallengeProgressService {
         return progressRepository.save(progress);
     }
 
-    public List<UserChallengeProgress> getUserProgress(Long usuarioId) {
-        return progressRepository.findByUsuarioId(usuarioId);
+    public List<UserProgressDTO> getUserProgress(Long usuarioId) {
+        List<UserChallengeProgress> progress = progressRepository.findByUsuarioId(usuarioId);
+        
+        return progress.stream()
+            .map(p -> new UserProgressDTO(
+                p.getId(),
+                p.getChallenge().getId(),
+                p.getChallenge().getTitle(),
+                p.getChallenge().getDifficulty(),
+                p.getSolved(),
+                p.getAttempts(),
+                p.getPointsEarned(),
+                p.getSolvedAt(),
+                p.getLastAttemptAt()
+            ))
+            .collect(Collectors.toList());
     }
 
-    public List<UserChallengeProgress> getSolvedChallenges(Long usuarioId) {
-        return progressRepository.findByUsuarioIdAndSolved(usuarioId, true);
+    public List<UserProgressDTO> getSolvedChallenges(Long usuarioId) {
+        List<UserChallengeProgress> progress = progressRepository.findByUsuarioIdAndSolved(usuarioId, true);
+        
+        return progress.stream()
+            .map(p -> new UserProgressDTO(
+                p.getId(),
+                p.getChallenge().getId(),
+                p.getChallenge().getTitle(),
+                p.getChallenge().getDifficulty(),
+                p.getSolved(),
+                p.getAttempts(),
+                p.getPointsEarned(),
+                p.getSolvedAt(),
+                p.getLastAttemptAt()
+            ))
+            .collect(Collectors.toList());
     }
 
     public Long getTotalSolved(Long usuarioId) {
