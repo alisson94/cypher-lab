@@ -1,6 +1,8 @@
 package com.cypherlab.cypher_lab.controllers;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,9 +61,20 @@ public class ChallengeController {
     }
     
     @GetMapping("/challenges")
-    public ResponseEntity<List<Challenge>> getAllChallenges() {
+    public ResponseEntity<List<ChallengeDetails>> getAllChallenges() {
         List<Challenge> challenges = challengeService.getAllChallenges();
-        return ResponseEntity.ok(challenges);
+        List<ChallengeDetails> dtos = challenges.stream().map(challenge -> 
+            new ChallengeDetails(
+                challenge.getId(),
+                challenge.getTitle(),
+                challenge.getDescription(),
+                challenge.getDifficulty(),
+                challenge.getCategory().getTitle(),
+                challenge.getReward()
+            )
+        )
+        .toList();
+        return ResponseEntity.ok(dtos);
     }
 
     //administrativos
