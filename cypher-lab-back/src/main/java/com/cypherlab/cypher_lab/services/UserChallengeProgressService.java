@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cypherlab.cypher_lab.models.Usuario;
+import com.cypherlab.cypher_lab.dto.ModuleProgressDTO;
 import com.cypherlab.cypher_lab.dto.UserProgressDTO;
 import com.cypherlab.cypher_lab.models.Challenge;
+import com.cypherlab.cypher_lab.models.ChallengeModule;
 import com.cypherlab.cypher_lab.models.UserChallengeProgress;
+import com.cypherlab.cypher_lab.repository.ChallengeModuleRepository;
 import com.cypherlab.cypher_lab.repository.ChallengeRepository;
 import com.cypherlab.cypher_lab.repository.UserChallengeProgressRepository;
 import com.cypherlab.cypher_lab.repository.UsuarioRepository;
@@ -23,6 +26,8 @@ public class UserChallengeProgressService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private ChallengeRepository challengeRepository;
+    @Autowired
+    private ChallengeModuleRepository moduleRepository;
     @Autowired
     private ChallengeService challengeService;
 
@@ -103,4 +108,55 @@ public class UserChallengeProgressService {
         return progressRepository.countByUsuarioIdAndSolved(usuarioId, true);
     }
 
+
+    //para modulos
+
+    //falta pra todos os modulos
+    
+    public ModuleProgressDTO getModuleProgress(Long usuarioId, Long moduleId) {
+        ChallengeModule module = moduleRepository.findById(moduleId)
+            .orElseThrow(() -> new RuntimeException("Módulo não encontrado"));
+        
+        List<Challenge> moduleChallenges = module.getListChallenges();
+        List<UserChallengeProgress> userProgress = progressRepository.findByUsuarioId(usuarioId);
+
+        int totalChallenges = moduleChallenges.size();
+        int totalPoints = moduleChallenges.stream()
+            .mapToInt(Challenge::getReward)
+            .sum();
+
+        List<UserChallengeProgress> solvedInModule = userProgress.stream()
+            .filter(p -> p.getSolved())
+            .filter(p -> p.getChallenge().getCategory().getId() == moduleId)
+            .collect(Collectors.toList());
+
+        int solvedChallenges = solvedInModule.size();
+        int earnedPoints = solvedInModule.stream()
+            .mapToInt(p -> p.getPointsEarned() != null ? p.getPointsEarned() : 0)
+            .sum();
+
+        return new ModuleProgressDTO(
+            module.getId(),
+            module.getTitle(),
+            totalChallenges,
+            solvedChallenges,
+            totalPoints,
+            earnedPoints
+        );
+    }
+
+    public boolean isModuleCompleted(Long usuarioId, Long moduleId) {
+        ChallengeModule module = moduleRepository.findById(moduleId)
+            .orElseThrow(() -> new RuntimeException("Módulo não encontrado"));
+        
+        int totalChallenges = module.getListChallenges().size();
+        
+        long solvedInModule = progressRepository
+            .findByUsuarioIdAndSolved(usuarioId, true)
+            .stream()
+            .filter(p -> p.getChallenge().getCategory().getId() == moduleId)
+            .count();
+        
+        return solvedInModule == totalChallenges && totalChallenges > 0;
+    }
 }
