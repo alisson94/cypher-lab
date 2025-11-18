@@ -1,5 +1,7 @@
 package com.cypherlab.cypher_lab.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -9,9 +11,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cypherlab.cypher_lab.dto.ChallengeDetails;
 import com.cypherlab.cypher_lab.models.Challenge;
 import com.cypherlab.cypher_lab.models.ChallengeModule;
 import com.cypherlab.cypher_lab.services.ChallengeModuleService;
+import com.cypherlab.cypher_lab.services.ChallengeService;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +29,9 @@ public class ChallengeModuleController {
 
     @Autowired
     private ChallengeModuleService challengeModuleService;
+
+    @Autowired
+    private ChallengeService challengeService;
 
     @GetMapping("/modules")
     public ResponseEntity<java.util.List<ChallengeModule>> getAllModules() {
@@ -42,10 +50,11 @@ public class ChallengeModuleController {
     }
 
     @GetMapping("/module/{moduleId}/challenges")
-    public ResponseEntity<java.util.List<Challenge>> getChallengesFromModule(@PathVariable long moduleId) {
-        java.util.List<Challenge> challenges = challengeModuleService.getChallengesFromModule(moduleId);
+    public ResponseEntity<List<ChallengeDetails>> getChallengesFromModule(@PathVariable long moduleId) {
+        List<Challenge> challenges = challengeModuleService.getChallengesFromModule(moduleId);
         if (challenges != null) {
-            return ResponseEntity.ok(challenges);
+            List<ChallengeDetails> dtos = challengeService.mapToChallengeDetails(challenges);
+            return ResponseEntity.ok(dtos);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -74,6 +83,19 @@ public class ChallengeModuleController {
         challengeModuleService.deleteChallengeModule(moduleId);
         return ResponseEntity.noContent().build();
     }
+
+    //  private List<ChallengeDetails> mapToChallengeDetails(List<Challenge> challenges) {
+    //     return challenges.stream()
+    //         .map(challenge -> new ChallengeDetails(
+    //             challenge.getId(),
+    //             challenge.getTitle(),
+    //             challenge.getDescription(),
+    //             challenge.getDifficulty(),
+    //             challenge.getCategory() != null ? challenge.getCategory().getTitle() : null,
+    //             challenge.getReward()
+    //         ))
+    //         .toList();
+    // }
 
 
 }
