@@ -109,9 +109,17 @@ public class UserChallengeProgressService {
     }
 
 
-    //para modulos
+    //progresso para modulos
 
     //falta pra todos os modulos
+
+    public List<ModuleProgressDTO> getAllModulesProgress(Long usuarioId) {
+        List<ChallengeModule> modules = moduleRepository.findAll();
+        
+        return modules.stream()
+            .map(m -> getModuleProgress(usuarioId, m.getId()))
+            .collect(Collectors.toList());
+    }
     
     public ModuleProgressDTO getModuleProgress(Long usuarioId, Long moduleId) {
         ChallengeModule module = moduleRepository.findById(moduleId)

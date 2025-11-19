@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cypherlab.cypher_lab.dto.ModuleProgressDTO;
 import com.cypherlab.cypher_lab.dto.UserProgressDTO;
 import com.cypherlab.cypher_lab.models.UserChallengeProgress;
 import com.cypherlab.cypher_lab.services.UserChallengeProgressService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api")
@@ -66,4 +69,42 @@ public class UserChallengeProgressController {
             "totalSolved", totalSolved
         ));
     }
+
+    @GetMapping("/user/{userId}/modules/progress")
+    public ResponseEntity<List<ModuleProgressDTO>> getAllModulesProgress(@PathVariable Long userId) {
+        try {
+            List<ModuleProgressDTO> modulesProgress = progressService.getAllModulesProgress(userId);
+            return ResponseEntity.ok(modulesProgress);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/user/{userId}/modules/{moduleId}/progress")
+    public ResponseEntity<ModuleProgressDTO> getModuleProgress(
+            @PathVariable Long userId, 
+            @PathVariable Long moduleId) {
+        try {
+            ModuleProgressDTO progress = progressService.getModuleProgress(userId, moduleId);
+            return ResponseEntity.ok(progress);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/user/{userId}/modules/{moduleId}/completed")
+    public ResponseEntity<?> isModuleCompleted(
+            @PathVariable Long userId, 
+            @PathVariable Long moduleId) {
+        try {
+            boolean completed = progressService.isModuleCompleted(userId, moduleId);
+            return ResponseEntity.ok(Map.of(
+                "moduleId", moduleId,
+                "completed", completed
+            ));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+    
 }
