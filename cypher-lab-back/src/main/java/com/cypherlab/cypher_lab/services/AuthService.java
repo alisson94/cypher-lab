@@ -12,6 +12,9 @@ import com.cypherlab.cypher_lab.repository.UsuarioRepository;
 @Service
 public class AuthService {
     @Autowired
+    private JwtService jwtService;
+
+    @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Autowired
@@ -30,13 +33,10 @@ public class AuthService {
         usuarioRepository.save(novoUsuario);
     }
     public String loginUsuario(LoginDTO loginDTO) {
-        // 1. Busca o usuário pelo email
         var usuario = usuarioRepository.findByEmail(loginDTO.email())
             .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
 
-        // 2. Verifica se a senha enviada (pura) corresponde à senha armazenada (criptografada)
         if (passwordEncoder.matches(loginDTO.senha(), usuario.getSenha())) {
-            // Em uma aplicação real, aqui você geraria um Token JWT
             return "Login realizado com sucesso!";
         }
 
