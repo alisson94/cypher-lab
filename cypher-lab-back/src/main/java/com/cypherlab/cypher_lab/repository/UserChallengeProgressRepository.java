@@ -18,4 +18,6 @@ public interface UserChallengeProgressRepository extends JpaRepository<UserChall
     List<UserChallengeProgress> findByUsuarioIdAndSolved(Long usuarioId, boolean solved);
 
     Long countByUsuarioIdAndSolved(Long usuarioId, boolean solved);
+
+    List<UserChallengeProgress> findByUsuarioIdAndSolvedOrderBySolvedAtDesc(Long usuarioId, boolean solved);
 }

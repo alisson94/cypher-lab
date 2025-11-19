@@ -106,5 +106,29 @@ public class UserChallengeProgressController {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
+
+    @GetMapping("/user/{userId}/streak")
+    public ResponseEntity<?> getCurrentStreak(@PathVariable Long userId) {
+        try {
+            int streak = progressService.getCurrentStreak(userId);
+            return ResponseEntity.ok(Map.of(
+                "currentStreak", streak
+            ));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/user/{userId}/rank")
+    public ResponseEntity<?> getUserRank(@PathVariable Long userId) {
+        try {
+            int rank = progressService.getUserRank(userId);
+            return ResponseEntity.ok(Map.of(
+                "rank", rank
+            ));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
     
 }

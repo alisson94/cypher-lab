@@ -7,6 +7,7 @@ public class ModuleProgressDTO {
     private Integer solvedChallenges;
     private Integer totalPoints;
     private Integer earnedPoints;
+    private String status;
     private Double completionPercentage;
 
     public ModuleProgressDTO() {}
@@ -19,8 +20,9 @@ public class ModuleProgressDTO {
         this.solvedChallenges = solvedChallenges;
         this.totalPoints = totalPoints;
         this.earnedPoints = earnedPoints;
+        this.status = solvedChallenges.equals(totalChallenges) ? "completed" : solvedChallenges > 0 ? "inProgress" : "notStarted";
         this.completionPercentage = totalChallenges > 0 
-            ? (solvedChallenges * 100.0) / totalChallenges 
+            ? Math.round((solvedChallenges * 100.0) / totalChallenges * 100) / 100.0 
             : 0.0;
     }
 
@@ -75,6 +77,14 @@ public class ModuleProgressDTO {
 
     public void setEarnedPoints(Integer earnedPoints) {
         this.earnedPoints = earnedPoints;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Double getCompletionPercentage() {

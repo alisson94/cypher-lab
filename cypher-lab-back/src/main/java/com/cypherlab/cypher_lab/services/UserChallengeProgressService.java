@@ -167,4 +167,56 @@ public class UserChallengeProgressService {
         
         return solvedInModule == totalChallenges && totalChallenges > 0;
     }
+
+    public int getCurrentStreak(Long usuarioId) {
+        List<UserChallengeProgress> solvedChallenges = progressRepository
+            .findByUsuarioIdAndSolvedOrderBySolvedAtDesc(usuarioId, true);
+        
+        if (solvedChallenges.isEmpty()) {
+            return 0;
+        }
+
+        // Converter datas para LocalDate (sem horário) e remover duplicatas
+        List<java.time.LocalDate> solvedDates = solvedChallenges.stream()
+            .map(p -> p.getSolvedAt().toLocalDate())
+            .distinct()
+            .sorted(java.util.Comparator.reverseOrder())
+            .collect(Collectors.toList());
+
+        if (solvedDates.isEmpty()) {
+            return 0;
+        }
+
+        java.time.LocalDate today = java.time.LocalDate.now();
+        java.time.LocalDate yesterday = today.minusDays(1);
+        
+        // Se não resolveu hoje nem ontem, streak = 0
+        if (!solvedDates.get(0).isEqual(today) && !solvedDates.get(0).isEqual(yesterday)) {
+            return 0;
+        }
+
+        int streak = 0;
+        java.time.LocalDate expectedDate = solvedDates.get(0);
+        
+        // Contar dias consecutivos
+        for (java.time.LocalDate date : solvedDates) {
+            if (date.isEqual(expectedDate)) {
+                streak++;
+                expectedDate = expectedDate.minusDays(1);
+            } else if (date.isBefore(expectedDate)) {
+                // Quebrou a sequência
+                break;
+            }
+        }
+        
+        return streak;
+    }
+
+    public int getUserRank(Long usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        
+        Long usersAhead = usuarioRepository.countByPontosGreaterThan(usuario.getPontos());
+        return usersAhead.intValue() + 1;
+    }
 }
