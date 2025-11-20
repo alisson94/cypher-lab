@@ -44,7 +44,7 @@ public class AuthController {
             Usuario usuario = usuarioRepository.findByEmail(data.email()).orElseThrow();
             
             // Retorna o objeto com token e dados
-            AuthResponse response = new AuthResponse(token, usuario.getEmail(), usuario.getId());
+            AuthResponse response = new AuthResponse(token, usuario.getEmail(), usuario.getId(), usuario.getRole());
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

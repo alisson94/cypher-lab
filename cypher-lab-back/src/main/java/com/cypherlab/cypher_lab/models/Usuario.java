@@ -31,6 +31,9 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<UserChallengeProgress> challengeProgress = new ArrayList<>();
 
+    @Column(nullable = false)
+    private String role = "USER";
+
     public Long getId(){
         return id;
     }
@@ -66,4 +69,12 @@ public class Usuario {
     public void setChallengeProgress(List<UserChallengeProgress> challengeProgresses){
         this.challengeProgress = challengeProgresses;
     }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }   
 }

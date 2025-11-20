@@ -9,17 +9,19 @@ public class ModuleProgressDTO {
     private Integer earnedPoints;
     private String status;
     private Double completionPercentage;
+    private Integer icon;
 
     public ModuleProgressDTO() {}
 
     public ModuleProgressDTO(Long moduleId, String moduleTitle, Integer totalChallenges, 
-                            Integer solvedChallenges, Integer totalPoints, Integer earnedPoints) {
+                            Integer solvedChallenges, Integer totalPoints, Integer earnedPoints, Integer icon) {
         this.moduleId = moduleId;
         this.moduleTitle = moduleTitle;
         this.totalChallenges = totalChallenges;
         this.solvedChallenges = solvedChallenges;
         this.totalPoints = totalPoints;
         this.earnedPoints = earnedPoints;
+        this.icon = icon;
         this.status = solvedChallenges.equals(totalChallenges) ? "completed" : solvedChallenges > 0 ? "inProgress" : "notStarted";
         this.completionPercentage = totalChallenges > 0 
             ? Math.round((solvedChallenges * 100.0) / totalChallenges * 100) / 100.0 
@@ -93,5 +95,13 @@ public class ModuleProgressDTO {
 
     public void setCompletionPercentage(Double completionPercentage) {
         this.completionPercentage = completionPercentage;
+    }
+
+    public Integer getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Integer icon) {
+        this.icon = icon;
     }
 }

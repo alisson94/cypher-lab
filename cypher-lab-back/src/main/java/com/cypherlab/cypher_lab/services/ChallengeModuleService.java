@@ -42,6 +42,7 @@ public class ChallengeModuleService {
     public ChallengeModule updateChallengeModule(long moduleId, ChallengeModule moduleDetails) {
         return challengeModuleRepository.findById(moduleId).map(module -> {
             module.setTitle(moduleDetails.getTitle());
+            module.setIcon(moduleDetails.getIcon());
             
             return challengeModuleRepository.save(module);
         }).orElse(null);

@@ -207,7 +207,8 @@ public class UserChallengeProgressService {
             totalChallenges,
             solvedChallenges,
             totalPoints,
-            earnedPoints
+            earnedPoints,
+            module.getIcon()
         );
     }
 
