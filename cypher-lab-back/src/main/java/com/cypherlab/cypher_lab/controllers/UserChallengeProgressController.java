@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cypherlab.cypher_lab.dto.ChallengeWithProgressDTO;
 import com.cypherlab.cypher_lab.dto.ModuleProgressDTO;
 import com.cypherlab.cypher_lab.dto.UserProgressDTO;
 import com.cypherlab.cypher_lab.models.UserChallengeProgress;
@@ -58,6 +59,16 @@ public class UserChallengeProgressController {
         } 
     }
     
+    @GetMapping("/user/{userId}/challenges")
+    public ResponseEntity<List<ChallengeWithProgressDTO>> getAllChallengesWithProgress(@PathVariable Long userId) {
+        try {
+            List<ChallengeWithProgressDTO> challenges = progressService.getAllChallengesWithProgress(userId);
+            return ResponseEntity.ok(challenges);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
     @GetMapping("/user/{userId}/progress")
     public ResponseEntity<List<UserProgressDTO>> getUserProgress(@PathVariable Long userId) {
         return ResponseEntity.ok(progressService.getUserProgress(userId));
@@ -93,6 +104,18 @@ public class UserChallengeProgressController {
         try {
             ModuleProgressDTO progress = progressService.getModuleProgress(userId, moduleId);
             return ResponseEntity.ok(progress);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/user/{userId}/modules/{moduleId}/challenges")
+    public ResponseEntity<List<ChallengeWithProgressDTO>> getUserModuleChallenges(
+            @PathVariable Long userId, 
+            @PathVariable Long moduleId) {
+        try {
+            List<ChallengeWithProgressDTO> challenges = progressService.getUserModuleChallenges(userId, moduleId);
+            return ResponseEntity.ok(challenges);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
         }

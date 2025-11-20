@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cypherlab.cypher_lab.models.Usuario;
+import com.cypherlab.cypher_lab.dto.ChallengeWithProgressDTO;
 import com.cypherlab.cypher_lab.dto.ModuleProgressDTO;
 import com.cypherlab.cypher_lab.dto.UserProgressDTO;
 import com.cypherlab.cypher_lab.models.Challenge;
@@ -30,6 +31,8 @@ public class UserChallengeProgressService {
     private ChallengeModuleRepository moduleRepository;
     @Autowired
     private ChallengeService challengeService;
+    @Autowired
+    private ChallengeModuleService challengeModuleService;
 
     public UserChallengeProgress submitAnswer(Long userId, Long challengeId, String answer) {
         
@@ -87,6 +90,64 @@ public class UserChallengeProgressService {
             .collect(Collectors.toList());
     }
 
+    public List<ChallengeWithProgressDTO> getUserModuleChallenges(Long userId, Long moduleId) {
+        List<Challenge> challenges = challengeModuleService.getChallengesFromModule(moduleId);
+        
+        List<UserChallengeProgress> userProgress = progressRepository.findByUsuarioId(userId);
+        
+        return challenges.stream()
+            .map(challenge -> {
+                UserChallengeProgress progress = userProgress.stream()
+                    .filter(p -> p.getChallenge().getId() == challenge.getId())
+                    .findFirst()
+                    .orElse(null);
+                
+                return new ChallengeWithProgressDTO(
+                    challenge.getId(),
+                    challenge.getTitle(),
+                    challenge.getDescription(),
+                    challenge.getDifficulty(),
+                    challenge.getCategory() != null ? challenge.getCategory().getTitle() : null,
+                    challenge.getReward(),
+                    progress != null ? progress.getSolved() : false,
+                    progress != null ? progress.getAttempts() : 0,
+                    progress != null ? progress.getPointsEarned() : null,
+                    progress != null ? progress.getSolvedAt() : null,
+                    progress != null ? progress.getLastAttemptAt() : null
+                );
+            })
+            .collect(Collectors.toList());
+    }
+
+    public List<ChallengeWithProgressDTO> getAllChallengesWithProgress(Long userId) {
+        List<Challenge> allChallenges = challengeRepository.findAll();
+        
+        List<UserChallengeProgress> userProgress = progressRepository.findByUsuarioId(userId);
+        
+        return allChallenges.stream()
+            .map(challenge -> {
+                UserChallengeProgress progress = userProgress.stream()
+                    .filter(p -> p.getChallenge().getId() == challenge.getId())
+                    .findFirst()
+                    .orElse(null);
+                
+                return new ChallengeWithProgressDTO(
+                    challenge.getId(),
+                    challenge.getTitle(),
+                    challenge.getDescription(),
+                    challenge.getDifficulty(),
+                    challenge.getCategory() != null ? challenge.getCategory().getTitle() : null,
+                    challenge.getReward(),
+                    progress != null ? progress.getSolved() : false,
+                    progress != null ? progress.getAttempts() : 0,
+                    progress != null ? progress.getPointsEarned() : null,
+                    progress != null ? progress.getSolvedAt() : null,
+                    progress != null ? progress.getLastAttemptAt() : null
+                );
+            })
+            .collect(Collectors.toList());
+    }
+
     public List<UserProgressDTO> getSolvedChallenges(Long usuarioId) {
         List<UserChallengeProgress> progress = progressRepository.findByUsuarioIdAndSolved(usuarioId, true);
         
@@ -109,10 +170,6 @@ public class UserChallengeProgressService {
         return progressRepository.countByUsuarioIdAndSolved(usuarioId, true);
     }
 
-
-    //progresso para modulos
-
-    //falta pra todos os modulos
 
     public List<ModuleProgressDTO> getAllModulesProgress(Long usuarioId) {
         List<ChallengeModule> modules = moduleRepository.findAll();
