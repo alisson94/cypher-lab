@@ -54,8 +54,9 @@ public class UserChallengeProgressService {
         }
 
         //verificar resposta
-        String hasedAnswer = challengeService.hashSubmission(answer.trim().toUpperCase());
-        if(hasedAnswer.equals(challenge.getSolutionHash())) {
+        String hashedAnswer = challengeService.hashSubmission(answer.trim().toUpperCase());
+        
+        if(hashedAnswer.equals(challenge.getSolutionHash())) {
             //resposta correta
             progress.setSolved(true);
             progress.setSolvedAt(java.time.LocalDateTime.now());

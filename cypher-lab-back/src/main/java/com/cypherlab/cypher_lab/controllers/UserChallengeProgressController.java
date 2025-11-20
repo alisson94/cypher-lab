@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cypherlab.cypher_lab.dto.ModuleProgressDTO;
 import com.cypherlab.cypher_lab.dto.UserProgressDTO;
 import com.cypherlab.cypher_lab.models.UserChallengeProgress;
+import com.cypherlab.cypher_lab.services.ChallengeService;
 import com.cypherlab.cypher_lab.services.UserChallengeProgressService;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -28,6 +29,9 @@ public class UserChallengeProgressController {
     @Autowired
     private UserChallengeProgressService progressService;
 
+    @Autowired
+    private ChallengeService challengeService;
+
     @PostMapping("/user/{userId}/challenges/{challengeId}/submit")
     private ResponseEntity<?> submitAnswer(
             @PathVariable Long userId, 
@@ -38,12 +42,14 @@ public class UserChallengeProgressController {
                 
         try {
             UserChallengeProgress progress = progressService.submitAnswer(userId, challengeId, answer);
+            boolean isCorrect = challengeService.validateResponse(challengeId, answer).isCorrect();
             
             return ResponseEntity.ok(Map.of(
                 "solved", progress.getSolved(),
                 "attempts", progress.getAttempts(),
                 "pointsEarned", progress.getPointsEarned()!= null ? progress.getPointsEarned() : 0,
-                "message", progress.getSolved() ? "Resposta correta! Desafio resolvido." : "Resposta incorreta. Tente novamente."
+                "message", isCorrect ? "Resposta correta! Desafio resolvido." : "Resposta incorreta. Tente novamente.",
+                "isCorrect", isCorrect ? true : false
             ));
 
 
