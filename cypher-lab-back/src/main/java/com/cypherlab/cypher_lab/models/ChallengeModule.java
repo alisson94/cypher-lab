@@ -28,6 +28,9 @@ public class ChallengeModule {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "icon")
+    private Integer icon;
+
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Challenge> listChallenges = new ArrayList<>();
@@ -50,6 +53,10 @@ public class ChallengeModule {
         if (listChallenges != null) listChallenges.forEach(this::addChallenge);
     }
 
+    public Integer getIcon() { return icon; }
+
+    public void setIcon(Integer icon) { this.icon = icon; }
+
     //metodos helpers pra manter almbos lados da relação sincronizados
     public void addChallenge(Challenge challenge) {
         if (challenge == null) return;
@@ -63,6 +70,8 @@ public class ChallengeModule {
         listChallenges.remove(c);
         c.setCategory(null);
     }
+
+
 
     
 }
