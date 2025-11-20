@@ -5,9 +5,12 @@ import org.springframework.stereotype.Component;
 
 import com.cypherlab.cypher_lab.models.Challenge;
 import com.cypherlab.cypher_lab.models.ChallengeModule;
+import com.cypherlab.cypher_lab.models.Usuario;
 import com.cypherlab.cypher_lab.repository.ChallengeRepository;
 import com.cypherlab.cypher_lab.services.ChallengeService;
 import com.cypherlab.cypher_lab.repository.ChallengeModuleRepository;
+import com.cypherlab.cypher_lab.repository.UsuarioRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
 
@@ -17,17 +20,33 @@ public class DataInitializer implements CommandLineRunner {
     private final ChallengeRepository challengeRepository;
     private final ChallengeModuleRepository challengeModuleRepository;
     private final ChallengeService challengeService;
+    private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public DataInitializer(ChallengeRepository challengeRepository, 
                           ChallengeModuleRepository challengeModuleRepository,
-                          ChallengeService challengeService) {
+                          ChallengeService challengeService,
+                          UsuarioRepository usuarioRepository,
+                          PasswordEncoder passwordEncoder) {
         this.challengeRepository = challengeRepository;
         this.challengeModuleRepository = challengeModuleRepository;
         this.challengeService = challengeService;
+        this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void run(String... args) throws Exception {
+        
+        // Criar usuário admin se não existir
+        if (usuarioRepository.findByEmail("admin@admin.com").isEmpty()) {
+            Usuario admin = new Usuario();
+            admin.setEmail("admin@admin.com");
+            admin.setSenha(passwordEncoder.encode("admin"));
+            admin.setRole("ADMIN");
+            admin.setPontos(0);
+            usuarioRepository.save(admin);
+        }
         
         if(challengeRepository.count() > 0) {
             return;

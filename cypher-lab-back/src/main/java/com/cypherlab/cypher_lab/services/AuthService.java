@@ -37,7 +37,7 @@ public class AuthService {
             .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
 
         if (passwordEncoder.matches(loginDTO.senha(), usuario.getSenha())) {
-            return jwtService.generateToken(usuario.getEmail(), usuario.getId());
+            return jwtService.generateToken(usuario.getEmail(), usuario.getId(), usuario.getRole());
         }
 
         throw new RuntimeException("Senha inválida!");
