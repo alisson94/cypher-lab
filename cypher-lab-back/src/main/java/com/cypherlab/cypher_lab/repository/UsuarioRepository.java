@@ -13,5 +13,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     
     Long countByPontosGreaterThan(Integer pontos);
     
-    List<Usuario> findAllByOrderByPontosDesc();
+    List<Usuario> findByRoleNotOrderByPontosDesc(String role);
 }

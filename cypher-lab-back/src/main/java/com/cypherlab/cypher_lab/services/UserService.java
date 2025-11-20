@@ -18,11 +18,10 @@ public class UserService {
     private UsuarioRepository usuarioRepository;
 
     public List<UserRankingDTO> getRanking() {
-        List<Usuario> usuarios = usuarioRepository.findAllByOrderByPontosDesc();
+        List<Usuario> usuarios = usuarioRepository.findByRoleNotOrderByPontosDesc("ADMIN");
         
         return IntStream.range(0, usuarios.size())
             .mapToObj(i -> new UserRankingDTO(
-                usuarios.get(i).getId(),
                 usuarios.get(i).getEmail(),
                 usuarios.get(i).getPontos(),
                 i + 1
