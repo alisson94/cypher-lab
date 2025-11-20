@@ -1,18 +1,18 @@
 package com.cypherlab.cypher_lab.config;
 
+import java.util.Arrays;
+
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.cypherlab.cypher_lab.models.Challenge;
 import com.cypherlab.cypher_lab.models.ChallengeModule;
 import com.cypherlab.cypher_lab.models.Usuario;
-import com.cypherlab.cypher_lab.repository.ChallengeRepository;
-import com.cypherlab.cypher_lab.services.ChallengeService;
 import com.cypherlab.cypher_lab.repository.ChallengeModuleRepository;
+import com.cypherlab.cypher_lab.repository.ChallengeRepository;
 import com.cypherlab.cypher_lab.repository.UsuarioRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Arrays;
+import com.cypherlab.cypher_lab.services.ChallengeService;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -43,6 +43,7 @@ public class DataInitializer implements CommandLineRunner {
             Usuario admin = new Usuario();
             admin.setEmail("admin@admin.com");
             admin.setSenha(passwordEncoder.encode("admin"));
+            admin.setUsername("admin");
             admin.setRole("ADMIN");
             admin.setPontos(0);
             usuarioRepository.save(admin);

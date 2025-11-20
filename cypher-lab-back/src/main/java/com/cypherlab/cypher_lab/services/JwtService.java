@@ -17,7 +17,7 @@ public class JwtService {
     private static final SecretKey SECRET_KEY = Jwts.SIG.HS256.key().build(); 
     private static final long EXPIRATION_TIME = 86400000; 
 
-    public String generateToken(String email, Long userId, String role) {
+    public String generateToken(String email, Long userId, String role, String username) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", userId);
         claims.put("role", role);

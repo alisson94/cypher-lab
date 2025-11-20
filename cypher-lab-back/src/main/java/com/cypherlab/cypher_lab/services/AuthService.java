@@ -24,6 +24,9 @@ public class AuthService {
         if (usuarioRepository.findByEmail(registerDTO.email()).isPresent()) {
             throw new RuntimeException("Email já cadastrado");
         }
+        if (usuarioRepository.findByUsername(registerDTO.username()).isPresent()) {
+            throw new RuntimeException("Username já cadastrado");
+        }
 
         String senhaCriptografada = passwordEncoder.encode(registerDTO.senha());
         Usuario novoUsuario = new Usuario();
@@ -37,7 +40,7 @@ public class AuthService {
             .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
 
         if (passwordEncoder.matches(loginDTO.senha(), usuario.getSenha())) {
-            return jwtService.generateToken(usuario.getEmail(), usuario.getId(), usuario.getRole());
+            return jwtService.generateToken(usuario.getEmail(), usuario.getId(), usuario.getRole(), usuario.getUsername());
         }
 
         throw new RuntimeException("Senha inválida!");
