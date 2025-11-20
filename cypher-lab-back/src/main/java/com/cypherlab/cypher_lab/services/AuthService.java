@@ -32,6 +32,7 @@ public class AuthService {
         Usuario novoUsuario = new Usuario();
         novoUsuario.setEmail(registerDTO.email());
         novoUsuario.setSenha(senhaCriptografada);
+        novoUsuario.setUsername(registerDTO.username());
         novoUsuario.setPontos(0);
         usuarioRepository.save(novoUsuario);
     }
