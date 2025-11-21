@@ -23,6 +23,7 @@ public class UserService {
         return IntStream.range(0, usuarios.size())
             .mapToObj(i -> new UserRankingDTO(
                 usuarios.get(i).getEmail(),
+                usuarios.get(i).getUsername(),
                 usuarios.get(i).getPontos(),
                 i + 1
             ))
