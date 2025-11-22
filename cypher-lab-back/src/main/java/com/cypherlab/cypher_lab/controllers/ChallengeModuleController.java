@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,12 +63,14 @@ public class ChallengeModuleController {
 
 
     //ADMINISTRATIVOS
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/module")
     public ResponseEntity<ChallengeModule> createModule(@RequestBody ChallengeModule module) {
         ChallengeModule createdModule = challengeModuleService.createChallengeModule(module);
         return ResponseEntity.ok(createdModule);
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/admin/module/{moduleId}")
     public ResponseEntity<ChallengeModule> updateModule(@PathVariable long moduleId, @RequestBody ChallengeModule moduleDetails) {
         ChallengeModule updatedModule = challengeModuleService.updateChallengeModule(moduleId, moduleDetails);
@@ -78,6 +81,7 @@ public class ChallengeModuleController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/admin/module/{moduleId}")
     public ResponseEntity<Void> deleteModule(@PathVariable long moduleId) {
         challengeModuleService.deleteChallengeModule(moduleId);

@@ -39,6 +39,10 @@ public class JwtService {
         return extractAllClaims(token).get("userId", Long.class);
     }
 
+    public String extractRole(String token) {
+        return extractAllClaims(token).get("role", String.class);
+    }
+
     public boolean isTokenValid(String token) {
         try {
             extractAllClaims(token);
