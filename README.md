@@ -1,37 +1,49 @@
-# CypherLab - Ferramenta Educacional de Cibersegurança
-O CypherLab é uma plataforma web gamificada projetada para o aprendizado prático de cibersegurança. A educação em cibersegurança é muitas vezes teórica e pouco interativa; o CypherLab visa preencher essa lacuna, oferecendo um ambiente prático para aprender e testar habilidades.
+# CypherLab API - Back-end de Segurança e Gamificação
 
-🎯 Objetivo
-Oferecer uma plataforma web com desafios interativos de cibersegurança, divididos em módulos temáticos, permitindo que os usuários aprendam fazendo.
+![Java](https://img.shields.io/badge/Java-17%2B-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Gradle](https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white)
 
-🚀 Escopo do MVP (Produto Mínimo Viável)
-O objetivo inicial é criar e lançar a versão com um único módulo de aprendizado para testar a ideia e coletar feedback.
+## 🎯 Sobre o Projeto
 
-Módulo Foco: Criptografia
+O **CypherLab API** é o motor back-end de uma plataforma educacional gamificada focada no ensino de Cibersegurança. Desenvolvido em Java com Spring Boot, este sistema gerencia a autenticação de usuários, a lógica de progressão (gamificação) e, crucialmente, a **validação segura** dos desafios práticos (flags).
 
-Funcionalidades Planejadas:
+O projeto segue uma **Arquitetura em Camadas** (*Layered Architecture*) para garantir desacoplamento, segurança e escalabilidade.
 
-[ ] Páginas de Login e Cadastro de usuários
+## 🛠️ Tecnologias Utilizadas
 
-[ ] Dashboard do usuário para visualização de progresso
+* **Linguagem:** Java 17+
+* **Framework:** Spring Boot 3.2.0
+* **Segurança:** Spring Security, JWT (JSON Web Token)
+* **Persistência:** Spring Data JPA / Hibernate
+* **Banco de Dados:** PostgreSQL
+* **Gerenciador de Build:** Gradle
 
-[ ] Módulo de Criptografia com 5 desafios de dificuldade crescente
+## 🏗️ Arquitetura e Estrutura
 
-[ ] Sistema básico de pontuação e feedback
+O código está organizado em pacotes que refletem responsabilidades distintas:
 
-[ ] Página de explicação detalhada após a conclusão de cada desafio
+* `config`: Configurações de segurança (CORS, Filtros JWT) e inicialização de dados.
+* `controllers`: Camada REST que recebe requisições HTTP e valida DTOs.
+* `services`: Regras de negócio, lógica de pontuação e validação de hashes.
+* `repository`: Interfaces de comunicação com o banco de dados.
+* `models`: Entidades JPA (Mapeamento das tabelas `users`, `challenges`, etc).
+* `dto`: Objetos de transferência de dados (Data Transfer Objects).
 
-📂 Repositórios do Projeto
-Este projeto é dividido em dois repositórios (front-end e back-end):
+## ⚙️ Configuração e Execução
 
-Front-End (Interface Web):
+### Pré-requisitos
+* JDK 17 instalado.
+* PostgreSQL rodando.
 
-https://github.com/NivaJr/cypher-lab
+### 1. Configuração do Banco de Dados
+Crie um banco de dados vazio no seu PostgreSQL:
 
-Back-End (API Spring Boot):
+```sql
+CREATE DATABASE cypherlab_db;
+```
 
-[(Back-End)](https://github.com/alisson94/cypher-lab)
 
-🛠️ Status do Projeto
-O projeto está atualmente em fase de planejamento e desenvolvimento inicial. As funcionalidades do MVP estão sendo construídas.
+
 
