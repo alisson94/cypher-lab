@@ -19,7 +19,6 @@ import com.cypherlab.cypher_lab.dto.UserProgressDTO;
 import com.cypherlab.cypher_lab.models.UserChallengeProgress;
 import com.cypherlab.cypher_lab.services.ChallengeService;
 import com.cypherlab.cypher_lab.services.UserChallengeProgressService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController

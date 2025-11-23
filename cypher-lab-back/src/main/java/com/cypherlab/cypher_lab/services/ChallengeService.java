@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cypherlab.cypher_lab.dto.ChallengeSubmission;
 import com.cypherlab.cypher_lab.dto.ChallengeDTO;
 import com.cypherlab.cypher_lab.dto.ChallengeDetails;
 import com.cypherlab.cypher_lab.dto.SubmissionResponse;
