@@ -14,7 +14,7 @@ O projeto segue uma **Arquitetura em Camadas** (*Layered Architecture*) para gar
 ## 🛠️ Tecnologias Utilizadas
 
 * **Linguagem:** Java 17+
-* **Framework:** Spring Boot 3.2.0
+* **Framework:** Spring Boot 3.5.6
 * **Segurança:** Spring Security, JWT (JSON Web Token)
 * **Persistência:** Spring Data JPA / Hibernate
 * **Banco de Dados:** PostgreSQL
@@ -27,22 +27,150 @@ O código está organizado em pacotes que refletem responsabilidades distintas:
 * `config`: Configurações de segurança (CORS, Filtros JWT) e inicialização de dados.
 * `controllers`: Camada REST que recebe requisições HTTP e valida DTOs.
 * `services`: Regras de negócio, lógica de pontuação e validação de hashes.
-* `repository`: Interfaces de comunicação com o banco de dados.
+* `repository`: Interfaces de comunicação com o banco de dados (Spring Data JPA).
 * `models`: Entidades JPA (Mapeamento das tabelas `users`, `challenges`, etc).
 * `dto`: Objetos de transferência de dados (Data Transfer Objects).
 
 ## ⚙️ Configuração e Execução
 
 ### Pré-requisitos
-* JDK 17 instalado.
-* PostgreSQL rodando.
+* JDK 17+ instalado.
+* PostgreSQL rodando localmente ou via Docker.
+* Gradle (já incluído via wrapper).
 
 ### 1. Configuração do Banco de Dados
 Crie um banco de dados vazio no seu PostgreSQL:
 
 ```sql
-CREATE DATABASE cypherlab_db;
+CREATE DATABASE cyberlabdb;
 ```
+
+### 2. Variáveis de Ambiente
+Configure as credenciais no arquivo `src/main/resources/application.properties`:
+
+```properties
+# Configuração do PostgreSQL
+spring.datasource.url=jdbc:postgresql://localhost:5432/cyberlabdb
+spring.datasource.username=seu_usuario_postgres
+spring.datasource.password=sua_senha_postgres
+
+# JPA / Hibernate
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+# Configuração JWT (Segurança)
+# Use uma chave forte (ex: gere uma string Base64 ou SHA-256 aleatória)
+jwt.secret-key=SuaChaveSuperSecretaQueDeveTerPeloMenos256Bits
+```
+
+### 3. Executando o Projeto
+
+No terminal, na raiz do projeto (`cypher-lab-back`), execute:
+
+```bash
+# Linux / Mac
+./gradlew bootRun
+
+# Windows
+gradlew.bat bootRun
+```
+
+A API estará disponível em:
+
+```
+http://localhost:8080/api
+```
+
+---
+
+## 🔒 Segurança e Validação de Desafios
+
+A plataforma segue o princípio de **Security by Design**, implementando diversas proteções:
+
+### 🔐 Proteção de Senhas
+* Todas as senhas são criptografadas com **BCrypt**.
+* Valores nunca são armazenados em texto puro.
+
+### 🛡️ Integridade das Respostas (Flags)
+As respostas corretas **não ficam salvas em texto plano**. O processo é:
+
+1. O sistema normaliza a resposta (`trim()` + `toUpperCase()`).
+2. Gera um hash **SHA-256**.
+3. Compara o resultado com o `solution_hash` salvo no banco.
+
+**Isso impede:**
+* Engenharia reversa.
+* Acesso indevido às respostas.
+* Vazamento de flags em caso de dump do banco.
+
+---
+
+## 🔑 Principais Endpoints
+
+### 🔐 Autenticação
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `POST` | `/api/auth/register` | Criar nova conta |
+| `POST` | `/api/auth/login` | Login (retorna Bearer Token JWT) |
+
+### 👤 Usuário (Requer Token JWT)
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `GET` | `/api/user/{userId}/progress` | Progresso nos desafios resolvidos |
+| `GET` | `/api/user/{userId}/challenges/all` | Todos os desafios com status de progresso |
+| `POST` | `/api/user/{userId}/challenges/{challengeId}/submit` | Enviar resposta do desafio |
+| `GET` | `/api/user/{userId}/stats` | Estatísticas gerais do usuário |
+| `GET` | `/api/user/{userId}/rank` | Posição no ranking global |
+
+### 📚 Desafios (Público ou protegido)
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `GET` | `/api/challenges` | Listar todos os desafios |
+| `GET` | `/api/challenges/{id}` | Detalhes de um desafio específico |
+| `POST` | `/api/challenges/{id}/submit` | Validar resposta (sem contexto de usuário) |
+
+### 📦 Módulos
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `GET` | `/api/modules` | Listar todos os módulos de aprendizado |
+| `GET` | `/api/user/{userId}/modules/progress` | Progresso do usuário em todos os módulos |
+
+---
+
+## 🤝 Contribuição
+
+Este é um projeto **Open Source** desenvolvido no contexto acadêmico.  
+Sinta-se livre para abrir **Issues** ou enviar **Pull Requests**.
+
+### Fluxo recomendado:
+
+1. Faça um **Fork** do projeto.
+2. Crie uma nova **Branch**:
+   ```bash
+   git checkout -b feat/nova-feature
+   ```
+3. Realize seus **commits** seguindo [Conventional Commits](https://www.conventionalcommits.org/):
+   ```bash
+   git commit -m "feat: adiciona nova feature"
+   ```
+4. Envie para seu repositório:
+   ```bash
+   git push origin feat/nova-feature
+   ```
+5. Abra um **Pull Request**.
+
+---
+
+## 🧑‍💻 Desenvolvedores
+
+- Luiz Fernando Lessa Mineiro Albuquerque – [[@LFMineiro](https://github.com/LFMineiro)]
+- Álisson Nunes Santana - [[@alisson94](https://github.com/alisson94)]
+---
+
+## 📧 Contato
+
+Para dúvidas ou sugestões, abra uma **Issue** no repositório ou entre em contato através do GitHub.
 
 
 
