@@ -58,10 +58,6 @@ spring.datasource.password=sua_senha_postgres
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-
-# Configuração JWT (Segurança)
-# Use uma chave forte (ex: gere uma string Base64 ou SHA-256 aleatória)
-jwt.secret-key=SuaChaveSuperSecretaQueDeveTerPeloMenos256Bits
 ```
 
 ### 3. Executando o Projeto
@@ -166,6 +162,7 @@ Sinta-se livre para abrir **Issues** ou enviar **Pull Requests**.
 
 - Luiz Fernando Lessa Mineiro Albuquerque – [[@LFMineiro](https://github.com/LFMineiro)]
 - Álisson Nunes Santana - [[@alisson94](https://github.com/alisson94)]
+- Nivaldo Pereira da Silva Junior - [[@NivaJr](https://github.com/NivaJr)]
 ---
 
 ## 📧 Contato
