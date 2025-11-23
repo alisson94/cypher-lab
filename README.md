@@ -157,6 +157,11 @@ Sinta-se livre para abrir **Issues** ou enviar **Pull Requests**.
 5. Abra um **Pull Request**.
 
 ---
+## 🔗 Repositórios Relacionados
+
+- **Frontend:** [github.com/NivaJr/cypher-lab-front](https://github.com/NivaJr/cypher-lab-front)
+- **Backend:** [github.com/alisson94/cypher-lab](https://github.com/alisson94/cypher-lab)
+
 
 ## 🧑‍💻 Desenvolvedores
 
